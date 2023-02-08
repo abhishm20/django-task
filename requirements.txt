@@ -1,0 +1,10 @@
+asgiref==3.6.0
+click==7.1.2
+click-didyoumean==0.3.0
+Django==4.1.6
+django-extra @ git+https://github.com/abhishm20/django-extra.git@8af14b3a7b8f10a33945c10ad073653d57192ffe
+djangorestframework==3.14.0
+drf-extensions==0.7.1
+p==1.4.0
+pytz==2022.7.1
+sqlparse==0.4.3
