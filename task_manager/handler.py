@@ -41,7 +41,7 @@ class TaskHandler(celery.Task):
         TaskService(task_id).update(
             {
                 "status": TaskStatus.FAILED,
-                "exception": {"Exception": exc},
+                "failed_reason": str(exc),
             }
         )
 
@@ -50,17 +50,10 @@ class TaskHandler(celery.Task):
         task_instance = Task.objects.filter(id=task_id).first()
         TaskService(task_id).update(
             {
-                "status": TaskStatus.PENDING,
-                "exception": {"Exception": exc},
+                "status": TaskStatus.RETRYING,
                 "counter": task_instance.instance.counter + 1,
             }
         )
 
     def after_return(self, status, retval, task_id, args, kwargs, einfo):
         logger.info("After return: %s with args: %s, kwargs: %s", task_id, args, kwargs)
-        TaskService(task_id).update(
-            {
-                "status": status,
-                "return_value": retval,
-            }
-        )
