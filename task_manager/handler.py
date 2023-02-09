@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import celery
 
+from .common import logger
 from .constants import TaskStatus
 from .models import Task
 from .services import TaskService
@@ -13,6 +14,9 @@ class TaskHandler(celery.Task):
         pass
 
     def before_start(self, task_id, args, kwargs):
+        logger.info(
+            "Before started: %s with args: %s, kwargs: %s", task_id, args, kwargs
+        )
         data = {
             "task_id": task_id,
             "status": TaskStatus.RUNNING,
@@ -22,6 +26,7 @@ class TaskHandler(celery.Task):
         TaskService().create(data=data)
 
     def on_success(self, retval, task_id, args, kwargs):
+        logger.info("On Success: %s with args: %s, kwargs: %s", task_id, args, kwargs)
         task_instance = Task.objects.filter(task_id=task_id).first()
         TaskService(task_instance.id).update(
             data={
@@ -33,6 +38,7 @@ class TaskHandler(celery.Task):
         )
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
+        logger.info("On Failure: %s with args: %s, kwargs: %s", task_id, args, kwargs)
         task_instance = Task.objects.filter(task_id=task_id).first()
         TaskService(task_instance.id).update(
             data={
@@ -44,6 +50,7 @@ class TaskHandler(celery.Task):
         )
 
     def on_retry(self, exc, task_id, args, kwargs, einfo):
+        logger.info("On Retry: %s with args: %s, kwargs: %s", task_id, args, kwargs)
         task_instance = Task.objects.filter(task_id=task_id).first()
         TaskService(task_instance.id).update(
             data={
@@ -56,6 +63,7 @@ class TaskHandler(celery.Task):
         )
 
     def after_return(self, status, retval, task_id, args, kwargs, einfo):
+        logger.info("After return: %s with args: %s, kwargs: %s", task_id, args, kwargs)
         task_instance = Task.objects.filter(task_id=task_id).first()
         TaskService(task_instance.id).update(
             data={
