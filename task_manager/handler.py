@@ -42,7 +42,7 @@ class TaskHandler(celery.Task):
         task_instance = Task.objects.filter(task_id=task_id).first()
         TaskService(task_instance.id).update(
             data={
-                "status": TaskStatus.FAILURE,
+                "status": TaskStatus.FAILED,
                 "arguments": {"args": args[0]},
                 "keyword_argument": kwargs,
                 "exception": {"Exception": exc},
