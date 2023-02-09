@@ -13,8 +13,8 @@ class Task(AbstractModel):
     status = models.CharField(
         max_length=20, default=TaskStatus.PENDING, choices=TaskStatus.choices
     )
-    arguments = JSONField(blank=True, null=True)
-    keyword_argument = JSONField(blank=True, null=True)
+    args = JSONField(blank=True, null=True)
+    kwargs = JSONField(blank=True, null=True)
     return_value = models.CharField(max_length=100, blank=True, null=True)
     exception = models.JSONField(max_length=100, blank=True, null=True)
     counter = models.IntegerField(default=1)

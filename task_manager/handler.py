@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import json
+
 import celery
 
 from .common import logger
@@ -20,18 +22,16 @@ class TaskHandler(celery.Task):
         data = {
             "id": task_id,
             "status": TaskStatus.RUNNING,
-            "arguments": {"args": args[0]},
-            "keyword_argument": kwargs,
+            "args": json.loads(json.dumps(args)),
+            "kwargs": kwargs,
         }
         TaskService().create(data=data)
 
     def on_success(self, retval, task_id, args, kwargs):
         logger.info("On Success: %s with args: %s, kwargs: %s", task_id, args, kwargs)
         TaskService(task_id).update(
-            data={
+            {
                 "status": TaskStatus.SUCCESS,
-                "arguments": {"args": args[0]},
-                "keyword_argument": kwargs,
                 "return_value": retval,
             }
         )
@@ -39,10 +39,8 @@ class TaskHandler(celery.Task):
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         logger.info("On Failure: %s with args: %s, kwargs: %s", task_id, args, kwargs)
         TaskService(task_id).update(
-            data={
+            {
                 "status": TaskStatus.FAILED,
-                "arguments": {"args": args[0]},
-                "keyword_argument": kwargs,
                 "exception": {"Exception": exc},
             }
         )
@@ -51,10 +49,8 @@ class TaskHandler(celery.Task):
         logger.info("On Retry: %s with args: %s, kwargs: %s", task_id, args, kwargs)
         task_instance = Task.objects.filter(id=task_id).first()
         TaskService(task_id).update(
-            data={
+            {
                 "status": TaskStatus.PENDING,
-                "arguments": {"args": args[0]},
-                "keyword_argument": kwargs,
                 "exception": {"Exception": exc},
                 "counter": task_instance.instance.counter + 1,
             }
@@ -63,10 +59,8 @@ class TaskHandler(celery.Task):
     def after_return(self, status, retval, task_id, args, kwargs, einfo):
         logger.info("After return: %s with args: %s, kwargs: %s", task_id, args, kwargs)
         TaskService(task_id).update(
-            data={
+            {
                 "status": status,
-                "arguments": {"args": args[0]},
-                "keyword_argument": kwargs,
                 "return_value": retval,
             }
         )
