@@ -1,7 +1,15 @@
 # -*- coding: utf-8 -*-
 
 
-class TaskChoices:
+class TaskStatus:
     SUCCESS = "success"
     PENDING = "pending"
-    FAILURE = "failure"
+    RUNNING = "running"
+    FAILED = "failed"
+
+    choices = (
+        (PENDING, "Pending"),
+        (RUNNING, "Running"),
+        (SUCCESS, "Success"),
+        (FAILED, "Failed"),
+    )

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import celery
 
-from .constants import TaskChoices
+from .constants import TaskStatus
 from .models import Task
 from .services import TaskService
 
@@ -15,7 +15,7 @@ class TaskHandler(celery.Task):
     def before_start(self, task_id, args, kwargs):
         data = {
             "task_id": task_id,
-            "status": TaskChoices.PENDING,
+            "status": TaskStatus.RUNNING,
             "arguments": {"args": args[0]},
             "keyword_argument": kwargs,
         }
@@ -25,7 +25,7 @@ class TaskHandler(celery.Task):
         task_instance = Task.objects.filter(task_id=task_id).first()
         TaskService(task_instance.id).update(
             data={
-                "status": TaskChoices.SUCCESS,
+                "status": TaskStatus.SUCCESS,
                 "arguments": {"args": args[0]},
                 "keyword_argument": kwargs,
                 "return_value": retval,
@@ -36,7 +36,7 @@ class TaskHandler(celery.Task):
         task_instance = Task.objects.filter(task_id=task_id).first()
         TaskService(task_instance.id).update(
             data={
-                "status": TaskChoices.FAILURE,
+                "status": TaskStatus.FAILURE,
                 "arguments": {"args": args[0]},
                 "keyword_argument": kwargs,
                 "exception": {"Exception": exc},
@@ -47,7 +47,7 @@ class TaskHandler(celery.Task):
         task_instance = Task.objects.filter(task_id=task_id).first()
         TaskService(task_instance.id).update(
             data={
-                "status": TaskChoices.PENDING,
+                "status": TaskStatus.PENDING,
                 "arguments": {"args": args[0]},
                 "keyword_argument": kwargs,
                 "exception": {"Exception": exc},
