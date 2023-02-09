@@ -7,7 +7,6 @@ from .constants import TaskStatus
 
 
 class Task(AbstractModel):
-    task_id = models.CharField(max_length=50)
     identifier = models.CharField(max_length=50)
     status = models.CharField(
         max_length=20, default=TaskStatus.PENDING, choices=TaskStatus.choices

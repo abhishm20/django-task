@@ -29,5 +29,5 @@ class TaskViewset(CreateMM, ListMM, UpdateMM, DestroyMM, RetrieveMM):
     )
 
     # Change logic
-    filterset_fields = ["task_id", "status"]
+    filterset_fields = ["status"]
     search_fields = ()

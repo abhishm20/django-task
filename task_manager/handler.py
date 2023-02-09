@@ -18,7 +18,7 @@ class TaskHandler(celery.Task):
             "Before started: %s with args: %s, kwargs: %s", task_id, args, kwargs
         )
         data = {
-            "task_id": task_id,
+            "id": task_id,
             "status": TaskStatus.RUNNING,
             "arguments": {"args": args[0]},
             "keyword_argument": kwargs,
@@ -27,8 +27,7 @@ class TaskHandler(celery.Task):
 
     def on_success(self, retval, task_id, args, kwargs):
         logger.info("On Success: %s with args: %s, kwargs: %s", task_id, args, kwargs)
-        task_instance = Task.objects.filter(task_id=task_id).first()
-        TaskService(task_instance.id).update(
+        TaskService(task_id).update(
             data={
                 "status": TaskStatus.SUCCESS,
                 "arguments": {"args": args[0]},
@@ -39,8 +38,7 @@ class TaskHandler(celery.Task):
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         logger.info("On Failure: %s with args: %s, kwargs: %s", task_id, args, kwargs)
-        task_instance = Task.objects.filter(task_id=task_id).first()
-        TaskService(task_instance.id).update(
+        TaskService(task_id).update(
             data={
                 "status": TaskStatus.FAILED,
                 "arguments": {"args": args[0]},
@@ -51,8 +49,8 @@ class TaskHandler(celery.Task):
 
     def on_retry(self, exc, task_id, args, kwargs, einfo):
         logger.info("On Retry: %s with args: %s, kwargs: %s", task_id, args, kwargs)
-        task_instance = Task.objects.filter(task_id=task_id).first()
-        TaskService(task_instance.id).update(
+        task_instance = Task.objects.filter(id=task_id).first()
+        TaskService(task_id).update(
             data={
                 "status": TaskStatus.PENDING,
                 "arguments": {"args": args[0]},
@@ -64,8 +62,7 @@ class TaskHandler(celery.Task):
 
     def after_return(self, status, retval, task_id, args, kwargs, einfo):
         logger.info("After return: %s with args: %s, kwargs: %s", task_id, args, kwargs)
-        task_instance = Task.objects.filter(task_id=task_id).first()
-        TaskService(task_instance.id).update(
+        TaskService(task_id).update(
             data={
                 "status": status,
                 "arguments": {"args": args[0]},
