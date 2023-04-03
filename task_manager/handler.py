@@ -19,13 +19,14 @@ class TaskHandler(celery.Task):
         logger.info(
             "Before started: %s with args: %s, kwargs: %s", task_id, args, kwargs
         )
-        data = {
-            "id": task_id,
-            "status": TaskStatus.RUNNING,
-            "args": json.loads(json.dumps(args)),
-            "kwargs": kwargs,
-        }
-        TaskService().create(data=data)
+        if not Task.objects.filter(id=task_id).exists():
+            data = {
+                "id": task_id,
+                "status": TaskStatus.RUNNING,
+                "args": json.loads(json.dumps(args)),
+                "kwargs": kwargs,
+            }
+            TaskService().create(data=data)
 
     def on_success(self, retval, task_id, args, kwargs):
         logger.info("On Success: %s with args: %s, kwargs: %s", task_id, args, kwargs)
