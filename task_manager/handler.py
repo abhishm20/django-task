@@ -52,7 +52,7 @@ class TaskHandler(celery.Task):
         TaskService(task_id).update(
             {
                 "status": TaskStatus.RETRYING,
-                "counter": task_instance.instance.counter + 1,
+                "counter": task_instance.counter + 1,
             }
         )
 
