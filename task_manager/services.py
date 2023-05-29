@@ -16,8 +16,8 @@ class TaskService(BaseService):
         if not data.get("identifier"):
             data["identifier"] = str(uuid.uuid4())
         data["created_at"] = int(time.time())
-        return super().create(data)
+        return super().create(data, request=None)
 
     def update(self, data, partial=True):
         data["updated_at"] = int(time.time())
-        return super().update(data, partial)
+        return super().update(data, request=None, partial=partial)
