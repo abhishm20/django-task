@@ -21,6 +21,7 @@ class TaskHandler(celery.Task):
         )
         if not Task.objects.filter(id=task_id).exists():
             data = {
+                "identifiers": kwargs.get("identifiers"),
                 "id": task_id,
                 "status": TaskStatus.RUNNING,
                 "args": json.loads(json.dumps(args)),
