@@ -25,23 +25,17 @@ Make sure you have Celery and Django installed as well.
 Once installed and configured, you can start tracking your Celery tasks using django-task. Here's a basic example of how to use the library:
 
 ```python
-from django_task.models import Task
-from django_task.serializers import TaskSerializer
+from django_task.handlers import TaskHandler
 
 # Create a new task
-task = Task.objects.create(name='my_task', status='PENDING', progress=0)
-
-# Update task status and progress
-task.status = 'STARTED'
-task.progress = 50
-task.save()
-
-# Retrieve task information
-serialized_task = TaskSerializer(task)
-print(serialized_task.data)
+@celery_app.task(
+    name="some_task", queue="default_queue", base=TaskHandler
+)
+def some_task(bulk_account_data, *args, **kwargs):
+    pass
 ```
 
-This example demonstrates creating a new task, updating its status and progress, and retrieving the task information using the provided serializer.
+Using this annotation, you can track the task status in your db.
 
 For detailed usage instructions and available APIs, please refer to the [documentation](https://github.com/abhishm20/django-task).
 
