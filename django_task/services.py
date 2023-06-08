@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
 
-from django_extra.core.services import BaseService
+from drf_misc.core.services import BaseService
 
 from .models import Task
 from .serializers import TaskSerializer

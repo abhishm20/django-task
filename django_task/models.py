@@ -2,7 +2,7 @@
 
 from django.db import models
 from django.db.models import JSONField
-from django_extra.core.models import AbstractModel
+from drf_misc.core.models import AbstractModel
 
 from .constants import TaskStatus
 

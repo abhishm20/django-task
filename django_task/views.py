@@ -1,13 +1,7 @@
 # -*- coding: utf-8 -*-
-from django_extra.core.api_views import (
-    CreateMM,
-    DestroyMM,
-    ListMM,
-    RetrieveMM,
-    UpdateMM,
-)
-from django_extra.core.filter_backend import FlexFieldsFilterBackend
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_misc.core.api_views import CreateMM, DestroyMM, ListMM, RetrieveMM, UpdateMM
+from drf_misc.core.filter_backend import FlexFieldsFilterBackend
 from rest_framework import filters
 
 from .models import Task

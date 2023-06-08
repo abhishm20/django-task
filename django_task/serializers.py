@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django_extra.core.serializers import FlexFieldsModelSerializer
+from drf_misc.core.serializers import FlexFieldsModelSerializer
 
 from .models import Task
 

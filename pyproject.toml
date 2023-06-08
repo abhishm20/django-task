@@ -2,8 +2,8 @@
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 [project]
-name = "django-task"
-version = "{{VERSION_PLACEHOLDER}}"
+name = "django-bg-task"
+version = "0.0.0"
 authors = [
   { name="Abhishek Sharma", email="abhishm20@gmail.com" },
 ]
@@ -43,4 +43,4 @@ multi_line_output = 3
 line_length = 88
 default_section = "THIRDPARTY"
 known_first_party = []
-known_third_party = ["celery", "django", "django_extra", "django_filters", "rest_framework", "rest_framework_extensions"]
+known_third_party = ["celery", "django", "django_filters", "drf_misc", "rest_framework", "rest_framework_extensions"]

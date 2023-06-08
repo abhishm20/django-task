@@ -7,7 +7,6 @@ click-didyoumean==0.3.0
 click-plugins==1.1.1
 click-repl==0.2.0
 Django==4.1.6
-django-extra @ git+https://github.com/abhishm20/django-extra.git@ad1e737dace4aba6e328ebb8d6f0ef7fdc5d8d02
 djangorestframework==3.14.0
 drf-extensions==0.7.1
 kombu==5.2.4
