@@ -3,7 +3,7 @@ from django.conf import settings
 
 # pylint: disable=invalid-name
 
-INSTALLED_APPS = ["task_manager"]
+INSTALLED_APPS = ["django_task"]
 
 
 class AppSettings:
