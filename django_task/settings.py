@@ -13,7 +13,7 @@ class AppSettings:
     @property
     def SERVICE_NAME(self):
         """Control how many times a task will be attempted."""
-        return getattr(self.app_settings, "SERVICE_NAME", "task_manager")
+        return getattr(self.app_settings, "SERVICE_NAME", "django_task")
 
     @property
     def USE_SERVICE_CACHE(self):

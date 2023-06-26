@@ -9,6 +9,7 @@ click-repl==0.2.0
 Django==4.1.6
 djangorestframework==3.14.0
 drf-extensions==0.7.1
+drf-misc==0.0.4
 kombu==5.2.4
 prompt-toolkit==3.0.36
 pytz==2022.7.1

@@ -21,7 +21,7 @@ LOGGING = {
         }
     },
     "loggers": {
-        "task_manager": {
+        "django_task": {
             "handlers": ["console"],
             "level": "INFO",
             "propagate": False,
@@ -29,4 +29,4 @@ LOGGING = {
     },
 }
 
-logger = logging.getLogger("task_manager")
+logger = logging.getLogger("django_task")
