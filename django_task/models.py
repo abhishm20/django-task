@@ -18,6 +18,3 @@ class Task(AbstractModel):
     return_value = JSONField(blank=True, null=True)
     failed_reason = JSONField(blank=True, null=True)
     counter = models.IntegerField(default=1)
-
-    created_at = models.CharField(max_length=32, blank=True, default=None)
-    updated_at = models.CharField(max_length=32, blank=True, default=None)
