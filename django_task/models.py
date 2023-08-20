@@ -23,3 +23,6 @@ class Task(AbstractModel):
     eta = models.CharField(max_length=20, blank=True, null=True)
     expires = models.CharField(max_length=20, blank=True, null=True)
     root_id = models.CharField(max_length=36, blank=True, null=True)
+
+    class Meta:
+        db_table = "background_task"
