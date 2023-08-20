@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import json
 
 import celery
 
@@ -13,6 +12,7 @@ from .services import TaskService
 
 class TaskHandler(celery.Task):
     def run(self, *args, **kwargs):
+        # TODO document why this method is empty
         pass
 
     def before_start(self, task_id, args, kwargs):
@@ -24,8 +24,14 @@ class TaskHandler(celery.Task):
                 "identifiers": kwargs.get("identifiers"),
                 "id": task_id,
                 "status": TaskStatus.RUNNING,
-                "args": json.loads(json.dumps(args)),
-                "kwargs": kwargs,
+                "args": self.request.args,
+                "kwargs": self.request.kwargs,
+                "retries": self.request.retries,
+                "is_eager": self.request.is_eager,
+                "eta": self.request.eta,
+                "expires": self.request.expires,
+                "root_id": self.request.root_id,
+                "parent_id": self.request.parent_id,
             }
             TaskService().create(data=data)
 

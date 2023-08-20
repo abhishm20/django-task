@@ -18,3 +18,8 @@ class Task(AbstractModel):
     return_value = JSONField(blank=True, null=True)
     failed_reason = JSONField(blank=True, null=True)
     counter = models.IntegerField(default=1)
+    retries = models.CharField(max_length=20, blank=True, null=True)
+    is_eager = models.CharField(max_length=20, blank=True, null=True)
+    eta = models.CharField(max_length=20, blank=True, null=True)
+    expires = models.CharField(max_length=20, blank=True, null=True)
+    root_id = models.CharField(max_length=36, blank=True, null=True)
