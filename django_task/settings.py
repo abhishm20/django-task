@@ -1,23 +1,32 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings
-
-# pylint: disable=invalid-name
+import logging
+import sys
 
 INSTALLED_APPS = ["django_task"]
+# Logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": True,
+    "formatters": {
+        "verbose": {
+            "format": "[%(asctime)s.%(msecs)03d] [%(name)s:%(levelname)s]" " [%(funcName)s:%(lineno)s] %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "stream": sys.stdout,
+            "formatter": "verbose",
+        }
+    },
+    "loggers": {
+        "django_task": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}
 
-
-class AppSettings:
-    def __init__(self):
-        self.app_settings = getattr(settings, "DRF_MISC_SETTINGS", {})
-
-    @property
-    def SERVICE_NAME(self):
-        """Control how many times a task will be attempted."""
-        return getattr(self.app_settings, "SERVICE_NAME", "django_task")
-
-    @property
-    def USE_SERVICE_CACHE(self):
-        return getattr(self.app_settings, "USE_SERVICE_CACHE", False)
-
-
-app_settings = AppSettings()
+logger = logging.getLogger("django_task")

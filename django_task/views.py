@@ -8,8 +8,6 @@ from .models import Task
 from .serializers import TaskSerializer
 from .services import TaskService
 
-# pylint: disable=no-member
-
 
 class TaskViewset(CreateMM, ListMM, UpdateMM, DestroyMM, RetrieveMM):
     queryset = Task.objects.filter().order_by("-created_at")

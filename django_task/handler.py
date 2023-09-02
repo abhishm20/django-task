@@ -1,34 +1,33 @@
 # -*- coding: utf-8 -*-
 
 import celery
+from drf_misc.core.api_exceptions import BadRequest
 
-from .common import logger
 from .constants import TaskStatus
 from .models import Task
 from .services import TaskService
+from .settings import logger
 
 # pylint: disable=no-member,import-error,too-many-arguments
 
 
 class TaskHandler(celery.Task):
     def run(self, *args, **kwargs):
-        # TODO document why this method is empty
-        pass
+        logger.info("Running: %s with args: %s, kwargs: %s", self.name, args, kwargs)
 
     def before_start(self, task_id, args, kwargs):
-        logger.info(
-            "Before started: %s with args: %s, kwargs: %s", task_id, args, kwargs
-        )
+        logger.info("Before started: %s with args: %s, kwargs: %s", task_id, args, kwargs)
+        if not kwargs.get("identifiers"):
+            raise BadRequest({"message": "identifiers is required"})
         if not Task.objects.filter(id=task_id).exists():
             data = {
                 "identifiers": kwargs.get("identifiers"),
                 "id": task_id,
+                "name": self.name,
                 "status": TaskStatus.RUNNING,
                 "args": self.request.args,
                 "kwargs": self.request.kwargs,
                 "retries": self.request.retries,
-                "is_eager": self.request.is_eager,
-                "eta": self.request.eta,
                 "expires": self.request.expires,
                 "root_id": self.request.root_id,
                 "parent_id": self.request.parent_id,

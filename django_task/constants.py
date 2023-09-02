@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+# pylint: disable=too-few-public-methods
+
 
 class TaskStatus:
     SUCCESS = "success"
