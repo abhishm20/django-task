@@ -19,9 +19,10 @@ class TaskHandler(celery.Task):
         logger.info("Before started: %s with args: %s, kwargs: %s", task_id, args, kwargs)
         if not kwargs.get("identifiers"):
             raise BadRequest({"message": "identifiers is required"})
+        identifiers = kwargs.pop("identifiers")
         if not Task.objects.filter(id=task_id).exists():
             data = {
-                "identifiers": kwargs.get("identifiers"),
+                "identifiers": identifiers,
                 "id": task_id,
                 "name": self.name,
                 "status": TaskStatus.RUNNING,
