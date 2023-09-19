@@ -5,15 +5,13 @@
 
 class TaskStatus:
     SUCCESS = "success"
-    PENDING = "pending"
     RUNNING = "running"
     FAILED = "failed"
-    RETRYING = "retrying"
+    ERROR = "error"
 
     choices = (
-        (PENDING, "Pending"),
         (RUNNING, "Running"),
         (SUCCESS, "Success"),
         (FAILED, "Failed"),
-        (RETRYING, "Retrying"),
+        (ERROR, "Error"),
     )

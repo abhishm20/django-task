@@ -26,30 +26,18 @@ class TaskHandler(celery.Task):
                 "id": task_id,
                 "name": self.name,
                 "status": TaskStatus.RUNNING,
-                "args": self.request.args,
-                "kwargs": self.request.kwargs,
                 "retries": self.request.retries,
                 "expires": self.request.expires,
                 "root_id": self.request.root_id,
-                "parent_id": self.request.parent_id,
             }
             TaskService().create(data=data)
-
-    def on_success(self, retval, task_id, args, kwargs):
-        logger.info("On Success: %s with args: %s, kwargs: %s", task_id, args, kwargs)
-        TaskService(task_id).update(
-            {
-                "status": TaskStatus.SUCCESS,
-                "return_value": retval,
-            }
-        )
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         logger.info("On Failure: %s with args: %s, kwargs: %s", task_id, args, kwargs)
         TaskService(task_id).update(
             {
-                "status": TaskStatus.FAILED,
-                "failed_reason": str(exc),
+                "status": TaskStatus.ERROR,
+                "error_reason": exc,
             }
         )
 
@@ -58,10 +46,20 @@ class TaskHandler(celery.Task):
         task_instance = Task.objects.filter(id=task_id).first()
         TaskService(task_id).update(
             {
-                "status": TaskStatus.RETRYING,
+                "status": TaskStatus.RUNNING,
                 "counter": task_instance.counter + 1,
             }
         )
 
     def after_return(self, status, retval, task_id, args, kwargs, einfo):
-        logger.info("After return: %s with args: %s, kwargs: %s", task_id, args, kwargs)
+        logger.info("After return: %s with args: %s, kwargs: %s, retval: %s", task_id, args, kwargs, retval)
+        if retval[0]:
+            status = TaskStatus.SUCCESS
+        else:
+            status = TaskStatus.FAILED
+        TaskService(task_id).update(
+            {
+                "status": status,
+                "response": retval[1],
+            }
+        )

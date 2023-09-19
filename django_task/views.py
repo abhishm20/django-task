@@ -23,3 +23,10 @@ class TaskViewset(CreateMM, ListMM, UpdateMM, DestroyMM, RetrieveMM):
     # Change logic
     filterset_fields = ["status"]
     search_fields = ()
+
+    def get_queryset(self):
+        company_id = self.request.auth_user.get("company_id")
+        if company_id:
+            company_qs = self.queryset.filter(identifiers__company_id=company_id)
+            self.queryset = company_qs
+        return self.queryset
