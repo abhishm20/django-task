@@ -37,7 +37,7 @@ class TaskHandler(celery.Task):
         TaskService(task_id).update(
             {
                 "status": TaskStatus.ERROR,
-                "error_reason": str(exc),
+                "response": {"message": str(exc)},
             }
         )
 

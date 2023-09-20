@@ -13,7 +13,6 @@ class Task(AbstractModel):
     identifiers = models.JSONField(null=True, blank=True)
     status = models.CharField(max_length=20, default=TaskStatus.RUNNING, choices=TaskStatus.choices)
     response = JSONField(blank=True, null=True)
-    error_reason = models.TextField(blank=True, null=True)
     counter = models.IntegerField(default=1)
     retries = models.CharField(max_length=20, blank=True, null=True)
     expires = models.CharField(max_length=20, blank=True, null=True)
