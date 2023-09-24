@@ -25,7 +25,7 @@ class TaskHandler(celery.Task):
                 "identifiers": identifiers,
                 "id": task_id,
                 "name": self.name,
-                "task_name": self.task_name if hasattr(self, "task_name") else identifiers.pop("name"),
+                "task_name": identifiers.pop("name", getattr(self, "task_name")),
                 "status": TaskStatus.RUNNING,
                 "retries": self.request.retries,
                 "expires": self.request.expires,
