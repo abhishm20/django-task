@@ -10,6 +10,7 @@ from .constants import TaskStatus
 class Task(AbstractModel):
     id = models.CharField(unique=True, primary_key=True, max_length=36)
     name = models.CharField(max_length=200)
+    task_name = models.CharField(max_length=200)
     identifiers = models.JSONField(null=True, blank=True)
     status = models.CharField(max_length=20, default=TaskStatus.RUNNING, choices=TaskStatus.choices)
     response = JSONField(blank=True, null=True)
