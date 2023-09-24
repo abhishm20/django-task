@@ -26,6 +26,7 @@ class TaskHandler(celery.Task):
                 "id": task_id,
                 "name": self.name,
                 "task_name": identifiers.pop("name", getattr(self, "task_name")),
+                "remark": identifiers.pop("remark", getattr(self, "remark")),
                 "status": TaskStatus.RUNNING,
                 "retries": self.request.retries,
                 "expires": self.request.expires,
