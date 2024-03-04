@@ -44,3 +44,6 @@ line_length = 120
 default_section = "THIRDPARTY"
 known_first_party = []
 known_third_party = ["celery", "django", "django_filters", "drf_misc", "rest_framework", "rest_framework_extensions"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["django_task"]
