@@ -11,10 +11,10 @@ class TaskService(BaseService):
     serializer = TaskSerializer
     model = Task
 
-    def create(self, data, request=None, audit_data=None):
+    def create(self, data):
         data["created_at"] = int(time.time())
-        return super().create(data, request, audit_data)
+        return super().create(data)
 
-    def update(self, data, request=None, audit_data=None, partial=True):
+    def update(self, data, partial=True):
         data["updated_at"] = int(time.time())
-        return super().update(data, request, audit_data=audit_data, partial=partial)
+        return super().update(data, partial=partial)
