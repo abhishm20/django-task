@@ -33,6 +33,4 @@ class TaskViewset(CreateMM, ListMM, UpdateMM, DestroyMM, RetrieveMM):
             self.queryset = self.queryset.filter(identifiers__user_id=user_id)
         if self.request.query_params.get("type"):
             self.queryset = self.queryset.filter(identifiers__type=self.request.query_params.get("type"))
-        if self.request.query_params.get("account_id"):
-            self.queryset = self.queryset.filter(identifiers__account_id=self.request.query_params.get("account_id"))
         return self.queryset
