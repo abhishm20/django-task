@@ -27,13 +27,13 @@ class TaskViewset(CreateMM, ListMM, UpdateMM, DestroyMM, RetrieveMM):
     def get_queryset(self):
         company_id = self.request.auth_user.get("company_id")
         user_id = self.request.auth_user.get("user_id")
-        account_id = self.request.auth_user.get("account_id")
-        if account_id:
-            self.queryset = self.queryset.filter(identifiers__account_id=account_id)
         if company_id:
             self.queryset = self.queryset.filter(identifiers__company_id=company_id)
         if user_id:
             self.queryset = self.queryset.filter(identifiers__user_id=user_id)
+        
         if self.request.query_params.get("type"):
             self.queryset = self.queryset.filter(identifiers__type=self.request.query_params.get("type"))
+        if self.request.query_params.get("account_id"):
+            self.queryset = self.queryset.filter(identifiers__account_id=self.request.query_params.get("account_id"))
         return self.queryset
